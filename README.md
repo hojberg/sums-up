@@ -1,7 +1,13 @@
 👍 Sums Up
 ===
 
-Example:
+### Installation
+
+```
+npm install sums-up
+```
+
+### Example:
 
 ```typescript
 import SumType from 'sums-up';
