@@ -12,11 +12,15 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "mocha",
+    "test": "./node_modules/.bin/mocha --require ts-node/register ./test/**/*_test.ts",
     "prepublish": "npm test"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "sinon": "^6.1.5",
+    "ts-node": "^7.0.1",
     "typescript": "^3.0.3"
   }
 }
