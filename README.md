@@ -4,7 +4,7 @@
 Example:
 
 ```typescript
-import SumType from './lib/sumtype';
+import SumType from 'sums-up';
 
 interface MatchPattern<T> {
   Nothing(): T;
