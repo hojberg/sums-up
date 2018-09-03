@@ -1,9 +1,22 @@
 {
-  "name": "zummed",
+  "name": "sums-up",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
+  "author": "Simon Højberg",
+  "keywords": [
+    "functionalprogramming",
+    "fp",
+    "sumtype"
+  ],
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha",
+    "prepublish": "npm test"
+  },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "typescript": "^3.0.3"
   }
 }

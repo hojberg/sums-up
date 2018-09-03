@@ -4,7 +4,7 @@ abstract class SumType<P> implements Setoid, Show {
   private kind: string;
   private data: any[];
 
-  constructor(kind, data) {
+  constructor(kind: string, data: any[]) {
     this.kind = kind;
     this.data = data;
   }
