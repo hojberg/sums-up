@@ -1,19 +1,15 @@
 import { expect } from 'chai';
 import SumType from '../src/sumtype';
-import sinon from 'sinon';
+import sinon, { SinonSpy } from 'sinon';
 
 // Mock implementation
-interface MatchPattern<T, A> {
-  Nothing(): T;
-  Just(a: A): T;
-}
-class Maybe<T, A> extends SumType<MatchPattern<T, A>> {}
+class Maybe<T> extends SumType<{ Just: [T]; Nothing: [] }> {}
 
-function Just<T, A>(a: A): Maybe<T, A> {
-  return new Maybe('Just', a);
+function Just<T>(value: T): Maybe<T> {
+  return new Maybe('Just', value);
 }
 
-function Nothing<T, A>(): Maybe<T, A> {
+function Nothing<T>(): Maybe<T> {
   return new Maybe('Nothing');
 }
 
@@ -37,8 +33,8 @@ describe('SumType', () => {
   });
 
   describe('caseOf', () => {
-    let nothingSpy;
-    let justSpy;
+    let nothingSpy: SinonSpy;
+    let justSpy: SinonSpy;
     beforeEach(() => {
       nothingSpy = sinon.spy();
       justSpy = sinon.spy();

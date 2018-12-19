@@ -12,18 +12,13 @@ npm install sums-up
 ```typescript
 import SumType from 'sums-up';
 
-interface MatchPattern<T, A> {
-  Nothing(): T;
-  Just(a: A): T;
+class Maybe<T> extends SumType<{ Just: [T]; Nothing: [] }> {}
+
+function Just<T>(value: T): Maybe<T> {
+  return new Maybe("Just", value);
 }
 
-class Maybe<T, A> extends SumType<MatchPattern<T, A>> { }
-
-function Just<T, A>(a: A): Maybe<T, A> {
-  return new Maybe("Just", a);
-}
-
-function Nothing<T, A>(): Maybe<T, A> {
+function Nothing<T>(): Maybe<T> {
   return new Maybe("Nothing");
 }
 
