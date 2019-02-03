@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import SumType from '../src/sumtype';
 import sinon, { SinonSpy } from 'sinon';
 
@@ -15,20 +14,20 @@ function Nothing<T>(): Maybe<T> {
 
 describe('SumType', () => {
   describe('equals', () => {
-    it('is equal when both the kind and the wrapped value match', () => {
-      expect(Just(1).equals(Just(1))).to.equal(true);
-      expect(Just(1).equals(Just(2))).to.equal(false);
+    test('is equal when both the kind and the wrapped value match', () => {
+      expect(Just(1).equals(Just(1))).toEqual(true);
+      expect(Just(1).equals(Just(2))).toEqual(false);
     });
 
-    it('is not equal when the kind differ', () => {
-      expect(Just(1).equals(Nothing())).to.equal(false);
+    test('is not equal when the kind differ', () => {
+      expect(Just(1).equals(Nothing())).toEqual(false);
     });
   });
 
   describe('toString', () => {
-    it('outputs the kind and the data', () => {
-      expect(Just(1).toString()).to.equal('Just [1]');
-      expect(Nothing().toString()).to.equal('Nothing');
+    test('outputs the kind and the data', () => {
+      expect(Just(1).toString()).toEqual('Just [1]');
+      expect(Nothing().toString()).toEqual('Nothing');
     });
   });
 
@@ -48,9 +47,9 @@ describe('SumType', () => {
         });
       });
 
-      it('calls the Just function on the pattern', () => {
-        expect(nothingSpy.called).to.equal(false);
-        expect(justSpy.calledWith('foo')).to.equal(true);
+      test('calls the Just function on the pattern', () => {
+        expect(nothingSpy.called).toEqual(false);
+        expect(justSpy.calledWith('foo')).toEqual(true);
       });
     });
 
@@ -62,9 +61,9 @@ describe('SumType', () => {
         });
       });
 
-      it('calls the Just function on the pattern', () => {
-        expect(nothingSpy.called).to.equal(true);
-        expect(justSpy.called).to.equal(false);
+      test('calls the Just function on the pattern', () => {
+        expect(nothingSpy.called).toEqual(true);
+        expect(justSpy.called).toEqual(false);
       });
     });
   });
