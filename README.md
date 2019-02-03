@@ -29,3 +29,5 @@ const result = x.caseOf({
   Just: (a) => a + "bar",
 });
 ```
+
+Contributors: @hojberg @dfreeman
