@@ -13,7 +13,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "prepublish": "npm test"
+    "prepublish": "npm test && npm run build"
   },
   "devDependencies": {
     "@types/jest": "^23.3.13",
