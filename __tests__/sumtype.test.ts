@@ -35,8 +35,8 @@ describe('SumType', () => {
     let nothingSpy: SinonSpy;
     let justSpy: SinonSpy;
     beforeEach(() => {
-      nothingSpy = sinon.spy();
-      justSpy = sinon.spy();
+      nothingSpy = sinon.spy(() => 'nothing');
+      justSpy = sinon.spy(() => 'just');
     });
 
     describe('Just', () => {
@@ -64,6 +64,33 @@ describe('SumType', () => {
       test('calls the Just function on the pattern', () => {
         expect(nothingSpy.called).toEqual(true);
         expect(justSpy.called).toEqual(false);
+      });
+    });
+
+    describe('_', () => {
+      let wildcardSpy: SinonSpy;
+      beforeEach(() => {
+        wildcardSpy = sinon.spy(() => 'wildcard');
+      });
+
+      test('calls the wildcard when no other kinds are given', () => {
+        let value = Just('hello').caseOf({ _: wildcardSpy });
+        expect(value).toEqual('wildcard');
+        expect(wildcardSpy.calledWithExactly()).toEqual(true);
+      });
+
+      test('calls the wildcard when no matching kind is given', () => {
+        let value = Just('hello').caseOf({ Nothing: nothingSpy, _: wildcardSpy });
+        expect(value).toEqual('wildcard');
+        expect(wildcardSpy.calledWithExactly()).toEqual(true);
+        expect(nothingSpy.called).toEqual(false);
+      });
+
+      test('skips the wildcard when a matching kind is given', () => {
+        let value = Just('hello').caseOf({ _: wildcardSpy, Just: justSpy });
+        expect(value).toEqual('just');
+        expect(wildcardSpy.called).toEqual(false);
+        expect(justSpy.calledWithExactly('hello')).toEqual(true);
       });
     });
   });
