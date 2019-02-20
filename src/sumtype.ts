@@ -13,7 +13,10 @@ function arrayEquals(a: unknown[] | undefined, b: unknown[] | undefined) {
 
 export type Variants = { [key: string]: unknown[] };
 export type KindAndData<T extends Variants> = { [K in keyof T]: Unshift<T[K], K> }[keyof T];
-export type CasePattern<T extends Variants, R> = { [K in keyof T]: (...args: T[K]) => R };
+export type ExhaustiveCasePattern<T extends Variants, R> = { [K in keyof T]: (...args: T[K]) => R };
+export type CasePattern<T extends Variants, R> =
+  | ExhaustiveCasePattern<T, R>
+  | Partial<ExhaustiveCasePattern<T, R>> & { _: () => R };
 
 abstract class SumType<M extends Variants> implements Setoid, Show {
   private kind: keyof M;
@@ -26,7 +29,11 @@ abstract class SumType<M extends Variants> implements Setoid, Show {
   }
 
   public caseOf<T>(pattern: CasePattern<M, T>): T {
-    return (pattern[this.kind] as any)(...this.data);
+    if (this.kind in pattern) {
+      return (pattern[this.kind] as any)(...this.data);
+    } else {
+      return pattern._();
+    }
   }
 
   public equals(that: SumType<M>): boolean {
