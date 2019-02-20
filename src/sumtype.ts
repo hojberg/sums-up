@@ -11,11 +11,11 @@ function arrayEquals(a: unknown[] | undefined, b: unknown[] | undefined) {
   return true;
 }
 
-export type SumMembers = { [key: string]: unknown[] };
-export type KindAndData<T extends SumMembers> = { [K in keyof T]: Unshift<T[K], K> }[keyof T];
-export type CasePattern<T extends SumMembers, R> = { [K in keyof T]: (...args: T[K]) => R };
+export type Variants = { [key: string]: unknown[] };
+export type KindAndData<T extends Variants> = { [K in keyof T]: Unshift<T[K], K> }[keyof T];
+export type CasePattern<T extends Variants, R> = { [K in keyof T]: (...args: T[K]) => R };
 
-abstract class SumType<M extends SumMembers> implements Setoid, Show {
+abstract class SumType<M extends Variants> implements Setoid, Show {
   private kind: keyof M;
   private data: unknown[];
 
