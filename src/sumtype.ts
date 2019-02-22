@@ -31,8 +31,10 @@ abstract class SumType<M extends Variants> implements Setoid, Show {
   public caseOf<T>(pattern: CasePattern<M, T>): T {
     if (this.kind in pattern) {
       return (pattern[this.kind] as any)(...this.data);
-    } else {
+    } else if (pattern._) {
       return pattern._();
+    } else {
+      throw `caseOf pattern is missing a function for ${this.kind}`;
     }
   }
 

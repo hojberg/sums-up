@@ -93,5 +93,21 @@ describe('SumType', () => {
         expect(justSpy.calledWithExactly('hello')).toEqual(true);
       });
     });
+
+    describe('missing pattern', () => {
+      test('throws the expected error when passed no patterns', () => {
+        const value = Just('hello');
+        expect(() => {
+          value.caseOf({} as any)
+        }).toThrowError('caseOf pattern is missing a function for Just');
+      });
+
+      test('throws the expected error when missing specific pattern', () => {
+        const value = Just('hello');
+        expect(() => {
+          value.caseOf({ Nothing: () => {} } as any)
+        }).toThrowError('caseOf pattern is missing a function for Just');
+      });
+    });
   });
 });
