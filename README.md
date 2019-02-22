@@ -53,4 +53,6 @@ const progressPercentage = state.caseOf({
 });
 ```
 
-Contributors: @hojberg @dfreeman
+Contributors: 
+
+@hojberg @dfreeman @AdamEdgett
