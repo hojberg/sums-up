@@ -34,7 +34,7 @@ abstract class SumType<M extends Variants> implements Setoid, Show {
     } else if (pattern._) {
       return pattern._();
     } else {
-      throw `caseOf pattern is missing a function for ${this.kind}`;
+      throw new Error(`caseOf pattern is missing a function for ${this.kind}`);
     }
   }
 
