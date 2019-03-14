@@ -7,7 +7,9 @@
 npm install sums-up
 ```
 
-### Example:
+### Example
+
+In TypeScript:
 
 ```typescript
 import SumType from 'sums-up';
@@ -19,6 +21,29 @@ function Just<T>(value: T): Maybe<T> {
 }
 
 function Nothing<T>(): Maybe<T> {
+  return new Maybe("Nothing");
+}
+
+const x = Just("foo");
+
+const result = x.caseOf({
+  Nothing: () => "nope",
+  Just: (a) => a + "bar",
+});
+```
+
+Or in JavaScript
+
+```javascript
+import SumType from 'sums-up';
+
+class Maybe extends SumType {}
+
+function Just(value) {
+  return new Maybe("Just", value);
+}
+
+function Nothing() {
   return new Maybe("Nothing");
 }
 
