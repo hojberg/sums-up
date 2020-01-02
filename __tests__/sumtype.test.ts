@@ -32,11 +32,11 @@ describe('SumType', () => {
   });
 
   describe('caseOf', () => {
-    let nothingSpy: SinonSpy;
-    let justSpy: SinonSpy;
+    let nothingSpy: SinonSpy<[], string>;
+    let justSpy: SinonSpy<[unknown], string>;
     beforeEach(() => {
       nothingSpy = sinon.spy(() => 'nothing');
-      justSpy = sinon.spy(() => 'just');
+      justSpy = sinon.spy((_) => 'just');
     });
 
     describe('Just', () => {
@@ -68,7 +68,7 @@ describe('SumType', () => {
     });
 
     describe('_', () => {
-      let wildcardSpy: SinonSpy;
+      let wildcardSpy: SinonSpy<[], string>;
       beforeEach(() => {
         wildcardSpy = sinon.spy(() => 'wildcard');
       });
