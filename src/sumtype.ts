@@ -19,35 +19,35 @@ export type CasePattern<T extends Variants, R> =
   | Partial<ExhaustiveCasePattern<T, R>> & { _: () => R };
 
 abstract class SumType<M extends Variants> implements Setoid, Show {
-  private kind: keyof M;
-  private data: unknown[];
+  #kind: keyof M;
+  #data: unknown[];
 
   constructor(...args: KindAndData<M>) {
     let [kind, ...data] = args;
-    this.kind = kind;
-    this.data = data;
+    this.#kind = kind;
+    this.#data = data;
   }
 
   public caseOf<T>(pattern: CasePattern<M, T>): T {
-    if (this.kind in pattern) {
-      return (pattern[this.kind] as any)(...this.data);
+    if (this.#kind in pattern) {
+      return (pattern[this.#kind] as any)(...this.#data);
     } else if (pattern._) {
       return pattern._();
     } else {
-      throw new Error(`caseOf pattern is missing a function for ${this.kind}`);
+      throw new Error(`caseOf pattern is missing a function for ${this.#kind}`);
     }
   }
 
   public equals(that: SumType<M>): boolean {
-    return this.kind === that.kind && arrayEquals(this.data, that.data);
+    return this.#kind === that.#kind && arrayEquals(this.#data, that.#data);
   }
 
   public toString(): string {
-    if (this.data.length) {
-      return `${this.kind} ${JSON.stringify(this.data)}`;
+    if (this.#data.length) {
+      return `${this.#kind} ${JSON.stringify(this.#data)}`;
     }
 
-    return `${this.kind}`;
+    return `${this.#kind}`;
   }
 }
 
