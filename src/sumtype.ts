@@ -1,4 +1,4 @@
-import { Setoid, Show, Unshift } from './utils';
+import { Setoid, Show, Unshift } from "./utils";
 
 function arrayEquals(a: unknown[] | undefined, b: unknown[] | undefined) {
   if (a === b) return true;
@@ -12,42 +12,60 @@ function arrayEquals(a: unknown[] | undefined, b: unknown[] | undefined) {
 }
 
 export type Variants = { [key: string]: unknown[] };
-export type KindAndData<T extends Variants> = { [K in keyof T]: Unshift<T[K], K> }[keyof T];
-export type ExhaustiveCasePattern<T extends Variants, R> = { [K in keyof T]: (...args: T[K]) => R };
+export type VariantNameAndData<T extends Variants> = {
+  [K in keyof T]: Unshift<T[K], K>;
+}[keyof T];
+export type ExhaustiveCasePattern<T extends Variants, R> = {
+  [K in keyof T]: (...args: T[K]) => R;
+};
 export type CasePattern<T extends Variants, R> =
   | ExhaustiveCasePattern<T, R>
-  | Partial<ExhaustiveCasePattern<T, R>> & { _: () => R };
+  | (Partial<ExhaustiveCasePattern<T, R>> & { _: () => R });
 
 abstract class SumType<M extends Variants> implements Setoid, Show {
-  private kind: keyof M;
+  private variantName: keyof M;
   private data: unknown[];
 
-  constructor(...args: KindAndData<M>) {
-    let [kind, ...data] = args;
-    this.kind = kind;
+  constructor(...args: VariantNameAndData<M>) {
+    let [variantName, ...data] = args;
+    this.variantName = variantName;
     this.data = data;
   }
 
+  // @deprecated
+  public get kind(): keyof M {
+    return this.variantName;
+  }
+
+  // Semi FSA compliancy
+  public get type(): keyof M {
+    return this.variantName;
+  }
+
   public caseOf<T>(pattern: CasePattern<M, T>): T {
-    if (this.kind in pattern) {
-      return (pattern[this.kind] as any)(...this.data);
+    if (this.variantName in pattern) {
+      return (pattern[this.variantName] as any)(...this.data);
     } else if (pattern._) {
       return pattern._();
     } else {
-      throw new Error(`caseOf pattern is missing a function for ${this.kind}`);
+      throw new Error(
+        `caseOf pattern is missing a function for ${this.variantName}`
+      );
     }
   }
 
   public equals(that: SumType<M>): boolean {
-    return this.kind === that.kind && arrayEquals(this.data, that.data);
+    return (
+      this.variantName === that.variantName && arrayEquals(this.data, that.data)
+    );
   }
 
   public toString(): string {
     if (this.data.length) {
-      return `${this.kind} ${JSON.stringify(this.data)}`;
+      return `${this.variantName} ${JSON.stringify(this.data)}`;
     }
 
-    return `${this.kind}`;
+    return `${this.variantName}`;
   }
 }
 
