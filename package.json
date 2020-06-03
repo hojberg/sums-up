@@ -1,6 +1,6 @@
 {
   "name": "sums-up",
-  "version": "2.2.0-1",
+  "version": "2.2.0",
   "main": "dist/index.js",
   "license": "MIT",
   "author": "Simon Højberg",
